@@ -33,7 +33,7 @@
         return str + key + '=' + params[key] + '&'
       }, '?')
       const xhr = new XMLHttpRequest()
-      const url = 'http://localhost:3000/search' + data
+      const url = 'http://115.159.85.174:3000/search' + data
       xhr.open('GET', url)
       xhr.send()
       xhr.onreadystatechange = function () {
@@ -59,7 +59,7 @@
       const name = document.querySelector('#insertName').value
       if (name) {
         const xhr = new XMLHttpRequest()
-        const url = 'http://localhost:3000/insert'
+        const url = 'http://115.159.85.174:3000/insert'
         xhr.open('POST', url)
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
         xhr.send("name=" + name)
