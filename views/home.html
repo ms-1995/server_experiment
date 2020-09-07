@@ -1,11 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
-  首页
+  <div>
+    <div id="">
+      <input id="searchName" type="text">
+      <button onclick="searchClick()">查询</button>
+    </div>
+    <div id="">
+      <input id="insertName" type="text">
+      <button onclick="insertClick()">添加</button>
+    </div>
+    <div id="showAll">信息</div>
+  </div>
+
+  <script>
+    (() => {
+      const main = document.querySelector('#showAll')
+      searchDB({}, res => {
+        main.innerHTML = res
+      })
+    })()
+
+    function searchDB(params, callback) {
+      const data = Object.keys(params).reduce((str, key) => {
+        return str + key + '=' + params[key] + '&'
+      }, '?')
+      const xhr = new XMLHttpRequest()
+      const url = 'http://localhost:3000/search' + data
+      xhr.open('GET', url)
+      xhr.send()
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var json = xhr.responseText; //获取到json字符串，还需解析
+          callback(json)
+        }
+      };
+    }
+
+    function searchClick() {
+      const name = document.querySelector('#searchName').value
+      const params = name ? {
+        name
+      } : {}
+      const main = document.querySelector('#showAll')
+      searchDB(params, res => {
+        main.innerHTML = res
+      })
+    }
+
+    function insertClick() {
+      const name = document.querySelector('#insertName').value
+      if (name) {
+        const xhr = new XMLHttpRequest()
+        const url = 'http://localhost:3000/insert'
+        xhr.open('POST', url)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+        xhr.send("name=" + name)
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          alert('插入成功')
+        }
+      };
+      }
+
+    }
+  </script>
 </body>
+
 </html>
